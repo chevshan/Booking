@@ -2,6 +2,8 @@ package com.example.OnlineStore.controllers;
 
 import com.example.OnlineStore.Facades.PersonFacade;
 import com.example.OnlineStore.dto.PersonDTO;
+import com.example.OnlineStore.util.ErrorResponse;
+import com.example.OnlineStore.util.PersonNotFoundException;
 import com.example.OnlineStore.util.PersonValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +48,14 @@ public class AuthController {
             return ResponseEntity.ok("Incorrect data...");
         }
         return ResponseEntity.ok("Welcome to the login page!");
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(PersonNotFoundException exception) {
+        ErrorResponse response = new ErrorResponse(
+                "There is no such person!",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

@@ -4,6 +4,7 @@ import com.example.OnlineStore.dto.PersonDTO;
 import com.example.OnlineStore.services.PersonService;
 import com.example.OnlineStore.services.RegistrationService;
 import com.example.OnlineStore.util.Mapper;
+import com.example.OnlineStore.util.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +33,7 @@ public class PersonFacade {
 
     public PersonDTO getPersonByPasswordAndUsername(String password, String username) {
         if (personService.findByPasswordAndUsername(password, username) == null) {
-            return null;
+            throw new PersonNotFoundException();
         }
         return mapper.convertToPersonDTO(personService.findByPasswordAndUsername(password, username));
     }
