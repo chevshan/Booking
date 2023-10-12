@@ -1,6 +1,6 @@
 package com.example.OnlineStore.controllers;
 
-import com.example.OnlineStore.Facades.BookingFacade;
+import com.example.OnlineStore.Facades.BookingFacadeImpl;
 import com.example.OnlineStore.dto.BookingDTO;
 import com.example.OnlineStore.util.BookingDeleteException;
 import com.example.OnlineStore.util.ErrorResponse;
@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/booking/{orderName}")
 public class BookingController {
-    private final BookingFacade bookingFacade;
+    private final BookingFacadeImpl bookingFacadeImpl;
 
-    public BookingController(BookingFacade bookingFacade) {
-        this.bookingFacade = bookingFacade;
+    public BookingController(BookingFacadeImpl bookingFacadeImpl) {
+        this.bookingFacadeImpl = bookingFacadeImpl;
     }
 
     @GetMapping()
     public ResponseEntity<BookingDTO> getBookingByOrderName(@PathVariable String orderName) {
-        BookingDTO bookingDTO = bookingFacade.findBooking(orderName);
+        BookingDTO bookingDTO = bookingFacadeImpl.findBooking(orderName);
         return ResponseEntity.ok(bookingDTO);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<HttpStatus> deleteBooking(@PathVariable String orderName) {
-        bookingFacade.deleteBooking(orderName);
+        bookingFacadeImpl.deleteBooking(orderName);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

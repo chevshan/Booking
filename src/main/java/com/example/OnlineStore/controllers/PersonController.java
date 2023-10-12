@@ -1,6 +1,6 @@
 package com.example.OnlineStore.controllers;
 
-import com.example.OnlineStore.Facades.BookingFacade;
+import com.example.OnlineStore.Facades.BookingFacadeImpl;
 import com.example.OnlineStore.dto.BookingDTO;
 import com.example.OnlineStore.util.BookingValidator;
 import com.example.OnlineStore.util.ErrorResponse;
@@ -18,18 +18,18 @@ import java.util.List;
 @RequestMapping("/person/{id}")
 public class PersonController {
 
-    private final BookingFacade bookingFacade;
+    private final BookingFacadeImpl bookingFacadeImpl;
     private final BookingValidator bookingValidator;
 
     @Autowired
-    public PersonController(BookingFacade bookingFacade, BookingValidator bookingValidator) {
-        this.bookingFacade = bookingFacade;
+    public PersonController(BookingFacadeImpl bookingFacadeImpl, BookingValidator bookingValidator) {
+        this.bookingFacadeImpl = bookingFacadeImpl;
         this.bookingValidator = bookingValidator;
     }
 
     @GetMapping("/bookings")
     public List<BookingDTO> getBookings(@PathVariable int id) {
-        return bookingFacade.getBookingsByPersonId(id);
+        return bookingFacadeImpl.getBookingsByPersonId(id);
     }
 
     @PostMapping("/addBooking")
@@ -39,7 +39,7 @@ public class PersonController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.ok(HttpStatus.NOT_ACCEPTABLE);
         }
-        bookingFacade.saveBooking(bookingDTO, id);
+        bookingFacadeImpl.saveBooking(bookingDTO, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

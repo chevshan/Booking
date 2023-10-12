@@ -2,6 +2,7 @@ package com.example.OnlineStore.services;
 
 import com.example.OnlineStore.models.Person;
 import com.example.OnlineStore.repositories.PersonRepository;
+import com.example.OnlineStore.serviceInterface.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
-public class RegistrationService {
+public class RegistrationServiceImpl implements RegistrationService {
 
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationService(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationServiceImpl(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
     }

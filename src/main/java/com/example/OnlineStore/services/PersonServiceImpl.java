@@ -2,6 +2,7 @@ package com.example.OnlineStore.services;
 
 import com.example.OnlineStore.models.Person;
 import com.example.OnlineStore.repositories.PersonRepository;
+import com.example.OnlineStore.serviceInterface.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +12,11 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class PersonService {
+public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 

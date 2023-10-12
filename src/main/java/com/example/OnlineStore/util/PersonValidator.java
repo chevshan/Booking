@@ -1,6 +1,6 @@
 package com.example.OnlineStore.util;
 
-import com.example.OnlineStore.Facades.PersonFacade;
+import com.example.OnlineStore.Facades.PersonFacadeImpl;
 import com.example.OnlineStore.dto.PersonDTO;
 import com.example.OnlineStore.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,11 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonFacade personFacade;
+    private final PersonFacadeImpl personFacadeImpl;
 
     @Autowired
-    public PersonValidator(PersonFacade personFacade) {
-        this.personFacade = personFacade;
+    public PersonValidator(PersonFacadeImpl personFacadeImpl) {
+        this.personFacadeImpl = personFacadeImpl;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         PersonDTO person = (PersonDTO) o;
-        if (personFacade.findPerson(person.getUsername()) != null) {
+        if (personFacadeImpl.findPerson(person.getUsername()) != null) {
             errors.rejectValue("username", "There is already a person with this name");
         }
     }

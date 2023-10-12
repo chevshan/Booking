@@ -1,6 +1,6 @@
 package com.example.OnlineStore.config;
 
-import com.example.OnlineStore.services.PersonDetailsService;
+import com.example.OnlineStore.services.PersonDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,10 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PersonDetailsService personDetailsService;
+    private final PersonDetailsServiceImpl personDetailsServiceImpl;
 
-    public SecurityConfig(PersonDetailsService personDetailsService) {
-        this.personDetailsService = personDetailsService;
+    public SecurityConfig(PersonDetailsServiceImpl personDetailsServiceImpl) {
+        this.personDetailsServiceImpl = personDetailsServiceImpl;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(personDetailsService)
+                .userDetailsService(personDetailsServiceImpl)
                 .passwordEncoder(getPasswordEncoder());
     }
 

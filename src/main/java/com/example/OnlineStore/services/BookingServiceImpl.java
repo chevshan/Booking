@@ -4,8 +4,8 @@ import com.example.OnlineStore.models.Booking;
 import com.example.OnlineStore.models.Person;
 import com.example.OnlineStore.repositories.BookingRepository;
 import com.example.OnlineStore.repositories.PersonRepository;
+import com.example.OnlineStore.serviceInterface.BookingService;
 import com.example.OnlineStore.util.BookingDeleteException;
-import com.example.OnlineStore.util.BookingNotFoundException;
 import com.example.OnlineStore.util.PersonNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class BookingService {
-
+public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final PersonRepository personRepository;
-    private final PersonService personService;
+    private final PersonServiceImpl personServiceImpl;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, PersonRepository personRepository, PersonService personService) {
+    public BookingServiceImpl(BookingRepository bookingRepository, PersonRepository personRepository, PersonServiceImpl personServiceImpl) {
         this.bookingRepository = bookingRepository;
         this.personRepository = personRepository;
-        this.personService = personService;
+        this.personServiceImpl = personServiceImpl;
     }
 
     public Booking getBookingByOrderName(String orderName) {
@@ -53,8 +51,8 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    private void enrichBooking (Booking booking, int id) {
-        booking.setPerson(personService.findById(id));
+    public void enrichBooking (Booking booking, int id) {
+        booking.setPerson(personServiceImpl.findById(id));
         booking.setOrderTime(LocalDateTime.now());
     }
 

@@ -1,6 +1,6 @@
 package com.example.OnlineStore.controllers;
 
-import com.example.OnlineStore.Facades.PersonFacade;
+import com.example.OnlineStore.Facades.PersonFacadeImpl;
 import com.example.OnlineStore.dto.PersonDTO;
 import com.example.OnlineStore.util.ErrorResponse;
 import com.example.OnlineStore.util.PersonNotFoundException;
@@ -18,11 +18,11 @@ public class AuthController {
 
     private final PersonValidator personValidator;
 
-    private final PersonFacade personFacade;
+    private final PersonFacadeImpl personFacadeImpl;
 
-    public AuthController(PersonValidator personValidator, PersonFacade personFacade) {
+    public AuthController(PersonValidator personValidator, PersonFacadeImpl personFacadeImpl) {
         this.personValidator = personValidator;
-        this.personFacade = personFacade;
+        this.personFacadeImpl = personFacadeImpl;
     }
 
     @GetMapping("/registration")
@@ -34,7 +34,7 @@ public class AuthController {
             return ResponseEntity.ok(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        personFacade.registerPerson(personDTO);
+        personFacadeImpl.registerPerson(personDTO);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class AuthController {
     @GetMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid PersonDTO personDTO) {
 
-        PersonDTO foundedPerson = personFacade.getPersonByPasswordAndUsername
+        PersonDTO foundedPerson = personFacadeImpl.getPersonByPasswordAndUsername
                 (personDTO.getPassword(),personDTO.getUsername());
         if (foundedPerson == null) {
             return ResponseEntity.ok("Incorrect data...");

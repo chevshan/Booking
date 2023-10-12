@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class PersonDetailsService implements UserDetailsService {
+public class PersonDetailsServiceImpl implements UserDetailsService {
 
     private final PersonRepository personRepository;
 
     @Autowired
-    public PersonDetailsService(PersonRepository personRepository) {
+    public PersonDetailsServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
