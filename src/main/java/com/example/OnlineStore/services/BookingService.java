@@ -4,6 +4,9 @@ import com.example.OnlineStore.models.Booking;
 import com.example.OnlineStore.models.Person;
 import com.example.OnlineStore.repositories.BookingRepository;
 import com.example.OnlineStore.repositories.PersonRepository;
+import com.example.OnlineStore.util.BookingDeleteException;
+import com.example.OnlineStore.util.BookingNotFoundException;
+import com.example.OnlineStore.util.PersonNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +44,7 @@ public class BookingService {
             Hibernate.initialize(person.get().getBookings());
             return new ArrayList<>(person.get().getBookings());
         }
-        else return Collections.emptyList();
+        else throw new PersonNotFoundException();
     }
 
     @Transactional
@@ -58,7 +61,9 @@ public class BookingService {
     @Transactional
     public void delete(String orderName) {
         Booking booking = bookingRepository.findByOrderName(orderName).orElse(null);
-        assert booking != null;
+        if (booking == null) {
+            throw new BookingDeleteException();
+        }
         bookingRepository.delete(booking);
     }
 }

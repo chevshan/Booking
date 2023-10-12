@@ -2,6 +2,7 @@ package com.example.OnlineStore.controllers;
 
 import com.example.OnlineStore.Facades.BookingFacade;
 import com.example.OnlineStore.dto.BookingDTO;
+import com.example.OnlineStore.util.BookingDeleteException;
 import com.example.OnlineStore.util.ErrorResponse;
 import com.example.OnlineStore.util.BookingNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,15 @@ public class BookingController {
     private ResponseEntity<ErrorResponse> handleException(BookingNotFoundException exception) {
         ErrorResponse response = new ErrorResponse(
                 "Person with this username wasn't found!",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(BookingDeleteException exception) {
+        ErrorResponse response = new ErrorResponse(
+                "Book with this username wasn't found!",
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
