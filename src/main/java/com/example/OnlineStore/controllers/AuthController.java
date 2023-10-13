@@ -3,6 +3,7 @@ package com.example.OnlineStore.controllers;
 import com.example.OnlineStore.Facades.PersonFacadeImpl;
 import com.example.OnlineStore.dto.PersonDTO;
 import com.example.OnlineStore.util.ErrorResponse;
+import com.example.OnlineStore.util.IncorrectDataException;
 import com.example.OnlineStore.util.PersonNotFoundException;
 import com.example.OnlineStore.util.PersonValidator;
 import org.springframework.http.HttpStatus;
@@ -40,20 +41,26 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> login(@RequestBody @Valid PersonDTO personDTO) {
 
         PersonDTO foundedPerson = personFacadeImpl.getPersonByPasswordAndUsername
                 (personDTO.getPassword(),personDTO.getUsername());
-        if (foundedPerson == null) {
-            return ResponseEntity.ok("Incorrect data...");
-        }
-        return ResponseEntity.ok("Welcome to the login page!");
+        return ResponseEntity.ok(foundedPerson);
     }
 
     @ExceptionHandler
     private ResponseEntity<ErrorResponse> handleException(PersonNotFoundException exception) {
         ErrorResponse response = new ErrorResponse(
                 "There is no such person!",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(IncorrectDataException exception) {
+        ErrorResponse response = new ErrorResponse(
+                "Login or password is not correct!",
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

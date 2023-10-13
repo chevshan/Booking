@@ -1,11 +1,14 @@
 package api;
 
-public class PersonData {
+public class PersonPojo {
     private String username;
 
     private String password;
 
-    public PersonData(String username, String password) {
+    public PersonPojo() {
+    }
+
+    public PersonPojo(String username, String password) {
         this.username = username;
         this.password = password;
     }

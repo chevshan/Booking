@@ -25,11 +25,6 @@ public class PersonServiceImpl implements PersonService {
         return fondedPerson.orElse(null);
     }
 
-    public Person findByPasswordAndUsername(String password, String username) {
-        Optional<Person> foundedPerson = personRepository.findByPasswordAndUsername(password, username);
-        return foundedPerson.orElse(null);
-    }
-
     public List<Person> findAll() {
         return personRepository.findAll();
     }

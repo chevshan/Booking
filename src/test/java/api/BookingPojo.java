@@ -1,6 +1,6 @@
 package api;
 
-public class BookingData {
+public class BookingPojo {
 
     private String orderName;
 
@@ -8,10 +8,10 @@ public class BookingData {
 
     private Integer count;
 
-    public BookingData() {
+    public BookingPojo() {
     }
 
-    public BookingData(String orderName, Integer price, Integer count) {
+    public BookingPojo(String orderName, Integer price, Integer count) {
         this.orderName = orderName;
         this.price = price;
         this.count = count;

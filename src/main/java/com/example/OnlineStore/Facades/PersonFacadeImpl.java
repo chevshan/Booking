@@ -4,13 +4,11 @@ import com.example.OnlineStore.dto.PersonDTO;
 import com.example.OnlineStore.facadeInterface.PersonFacade;
 import com.example.OnlineStore.services.PersonServiceImpl;
 import com.example.OnlineStore.services.RegistrationServiceImpl;
+import com.example.OnlineStore.util.IncorrectDataException;
 import com.example.OnlineStore.util.Mapper;
-import com.example.OnlineStore.util.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PersonFacadeImpl implements PersonFacade {
@@ -32,20 +30,18 @@ public class PersonFacadeImpl implements PersonFacade {
         return mapper.convertToPersonDTO(personServiceImpl.findByUsername(username));
     }
 
-    public PersonDTO getPersonByPasswordAndUsername(String password, String username) {
-        if (personServiceImpl.findByPasswordAndUsername(password, username) == null) {
-            throw new PersonNotFoundException();
+    public PersonDTO getPersonByPasswordAndUsername(String password, String username){
+        try {
+            registrationServiceImpl.authenticateUser(password, username);
         }
-        return mapper.convertToPersonDTO(personServiceImpl.findByPasswordAndUsername(password, username));
+        catch (AuthenticationException exception) {
+            throw new IncorrectDataException();
+        }
+        return mapper.convertToPersonDTO(personServiceImpl.findByUsername(username));
     }
 
     public void registerPerson(PersonDTO personDTO) {
         registrationServiceImpl.register(mapper.convertToPerson(personDTO));
-    }
-
-    public List<PersonDTO> findAll() {
-        return personServiceImpl.findAll().stream().map(mapper::convertToPersonDTO)
-                .collect(Collectors.toList());
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.OnlineStore.util;
 
-import com.example.OnlineStore.Facades.BookingFacadeImpl;
 import com.example.OnlineStore.dto.BookingDTO;
+import com.example.OnlineStore.services.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -12,11 +12,11 @@ import org.springframework.validation.Validator;
 @Configuration
 public class BookingValidator implements Validator {
 
-    private final BookingFacadeImpl bookingFacadeImpl;
+    private final BookingServiceImpl bookingService;
 
     @Autowired
-    public BookingValidator(BookingFacadeImpl bookingFacadeImpl) {
-        this.bookingFacadeImpl = bookingFacadeImpl;
+    public BookingValidator(BookingServiceImpl bookingService) {
+        this.bookingService = bookingService;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class BookingValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         BookingDTO booking = (BookingDTO) o;
-        if (bookingFacadeImpl.findBooking(booking.getOrderName()) != null) {
+        if (bookingService.getBookingByOrderName(booking.getOrderName()) != null) {
             errors.rejectValue("orderName", "There is already a booking with this name");
         }
     }
